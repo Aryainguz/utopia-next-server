@@ -12,3 +12,27 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id         String   @id @default(cuid()) // Unique identifier
+  username   String   @unique // Username must be unique
+  password   String
+  avatarUrl  String
+  banned     Boolean?   @default(false)
+  posts      Post[]
+  likedPosts Post[]   @relation("likedPosts")
+  createdAt  DateTime @default(now()) // Timestamp for account creation
+  updatedAt  DateTime @updatedAt // first time will be same as createdAt
+}
+
+model Post {
+  id          String   @id @default(cuid())
+  content     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  likes       Int
+  impressions Int
+  userId      String // Foreign key to the User model
+  user        User     @relation(fields: [userId], references: [id]) // Relation to User
+  likedBy     User[]   @relation("likedPosts")
+}
