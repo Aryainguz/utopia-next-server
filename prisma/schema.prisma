@@ -16,10 +16,10 @@ datasource db {
 model User {
   id         String   @id @default(cuid()) // Unique identifier
   username   String   @unique // Username must be unique
-  password   String
+  password   String   
   avatarUrl  String
   banned     Boolean?   @default(false)
-  posts      Post[]
+  posts      Post[]   @relation("userPosts")
   likedPosts Post[]   @relation("likedPosts")
   createdAt  DateTime @default(now()) // Timestamp for account creation
   updatedAt  DateTime @updatedAt // first time will be same as createdAt
@@ -33,6 +33,6 @@ model Post {
   likes       Int
   impressions Int
   userId      String // Foreign key to the User model
-  user        User     @relation(fields: [userId], references: [id]) // Relation to User
+  user        User     @relation("userPosts",fields: [userId], references: [id],onDelete: Cascade) // Relation to User and if user gets deleted all his posts gets deleted as well
   likedBy     User[]   @relation("likedPosts")
 }
