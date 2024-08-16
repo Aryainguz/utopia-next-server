@@ -8,7 +8,7 @@ export async function POST(req:NextRequest) {
  try {
     const {username,password,avatarUrl } = await req.json()
     if (!username || !avatarUrl || !password) {
-        return NextResponse.json({ message: 'Username, email, and password are required' }, { status: 400 });
+        return NextResponse.json({ message: 'Username, email, and password are required',success:false }, { status: 400 });
       }
     const hashedPassword = await bcrypt.hash(password, 10);
     console.log(username,password,avatarUrl)
