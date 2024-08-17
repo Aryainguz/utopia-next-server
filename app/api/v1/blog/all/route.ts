@@ -10,7 +10,8 @@ export async function GET(req:NextRequest) {
                 likes:true,
                 impressions:true,
                 likedBy:true,
-                user:true
+                user:true,
+                createdAt:true,
             }
         })
         return NextResponse.json({ posts, success: true }, { status: 200 });

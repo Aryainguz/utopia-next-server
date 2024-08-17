@@ -13,6 +13,7 @@ export async function GET(
       },
       select: {
         content: true,
+        createdAt: true,
         id: true,
         likes: true,
         impressions: true,
