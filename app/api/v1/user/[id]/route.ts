@@ -14,6 +14,11 @@ export async function GET(
 ) {
   const id = context.params.id;
   try {
+    const cachedUser = cache.get(`user-${id}`);
+    if (cachedUser) {
+      return NextResponse.json({ user: cachedUser, success: true }, { status:
+        200 });
+    }
     const user = await prisma.user.findFirst({
       where: {
         id,
@@ -29,6 +34,7 @@ export async function GET(
         { message: "User Not Found!", success: true },
         { status: 200 }
       );
+    cache.set(`user-${id}`, user);
     return NextResponse.json({ user, success: true }, { status: 200 });
   } catch (error) {}
 }
