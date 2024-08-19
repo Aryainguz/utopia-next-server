@@ -1,6 +1,12 @@
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
+import NodeCache from "node-cache";
+
+
+
+const cache = new NodeCache({ stdTTL: 60 * 5 }); // Cache for 5 minutes
+
 
 export async function GET(
   req: NextRequest,
@@ -27,7 +33,7 @@ export async function GET(
   } catch (error) {}
 }
 
-export async function PATCH(
+export async function PUT(
   req: NextRequest,
   context: { params: { id: string } }
 ) {
@@ -54,13 +60,21 @@ export async function PATCH(
     }
 
     // Update the user
-    await prisma.user.update({
+    const user = await prisma.user.update({
       where: { id: id },
       data: updateData,
+      select: {
+        username: true,
+        id: true,
+        avatarUrl: true,
+      },
     });
 
+    // clear the cache
+    cache.del("posts");
+
     return NextResponse.json(
-      { message: "User Updated Successfully!", success: true },
+      { message: "User Updated Successfully!", success: true,user },
       { status: 200 }
     );
   } catch (error: any) {
