@@ -1,11 +1,9 @@
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import NodeCache from "node-cache";
+import cache from "@/utils/cache";
 
 
-
-const cache = new NodeCache({ stdTTL: 60 * 5 }); // Cache for 5 minutes
 
 
 export async function GET(
