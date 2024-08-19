@@ -35,4 +35,5 @@ model Post {
   userId      String // Foreign key to the User model
   user        User     @relation("userPosts",fields: [userId], references: [id],onDelete: Cascade) // Relation to User and if user gets deleted all his posts gets deleted as well
   likedBy     User[]   @relation("likedPosts")
+  viewdIp     String[]
 }

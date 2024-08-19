@@ -11,7 +11,6 @@ export async function POST(req:NextRequest) {
         return NextResponse.json({ message: 'Username, email, and password are required',success:false }, { status: 400 });
       }
     const hashedPassword = await bcrypt.hash(password, 10);
-    console.log(username,password,avatarUrl)
     await prisma.user.create({
         data:{
             username,
