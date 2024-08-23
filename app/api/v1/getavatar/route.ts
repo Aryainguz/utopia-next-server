@@ -32,7 +32,13 @@ export async function GET(req: NextRequest) {
       // Select the first element after shuffling
       const randomAvatarUrl = shuffledResources[0].secure_url;
 
-      return NextResponse.json({ url: randomAvatarUrl });
+      const response = NextResponse.json({ url: randomAvatarUrl });
+
+            // Set Cache-Control header to prevent caching
+            response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0, s-maxage=0');
+    
+            return response;
+
     } catch (error) {
       console.error("Error fetching avatars:", error);
       NextResponse.json({ message: "Something went wrong" });

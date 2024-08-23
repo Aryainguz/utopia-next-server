@@ -15,7 +15,12 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    return NextResponse.json({ posts, success: true }, { status: 200 });
+    const response =  NextResponse.json({ posts, success: true }, { status: 200 });
+      // Set Cache-Control header to prevent caching
+      response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0, s-maxage=0');
+    
+      return response;
+    return
   } catch (error: any) {
     return NextResponse.json(
       { message: error.message, success: false },
