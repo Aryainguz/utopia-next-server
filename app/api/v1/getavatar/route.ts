@@ -31,19 +31,16 @@ export async function GET(req: NextRequest) {
     // Select the first element after shuffling
     const randomAvatarUrl = await shuffledResources[0].secure_url;
 
-    const response = NextResponse.json({ url: randomAvatarUrl });
-
-    // Set Cache-Control headers
-    response.headers.set(
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate, proxy-revalidate"
+    return NextResponse.json(
+      { url: randomAvatarUrl },
+      {
+        headers: {
+          "Cache-Control": "public, s-maxage=0",
+          "CDN-Cache-Control": "public, s-maxage=0",
+          "Vercel-CDN-Cache-Control": "public, s-maxage=0",
+        },
+      }
     );
-    response.headers.set("Pragma", "no-cache");
-    response.headers.set("Expires", "0");
-    response.headers.set("Surrogate-Control", "no-store");
-    response.headers.set("X-Vercel-Cache", "MISS");
-
-    return response;
   } catch (error) {
     console.error("Error fetching avatars:", error);
     NextResponse.json({ message: "Something went wrong" });
