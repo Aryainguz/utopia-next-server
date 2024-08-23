@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
     response.headers.set('Pragma', 'no-cache');
     response.headers.set('Expires', '0');
     response.headers.set('Surrogate-Control', 'no-store');
-    response.headers.set('x-vercel-cache', 'MISS');
+    response.headers.set('X-Vercel-Cache', 'MISS');
 
       return response;
   } catch (error: any) {
