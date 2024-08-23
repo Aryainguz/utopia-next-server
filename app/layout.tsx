@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   title: "utopia API",
 };
 
+export const fetchCache = 'force-no-store';
+
 export default function RootLayout({
   children,
 }: Readonly<{
