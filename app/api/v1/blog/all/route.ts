@@ -1,8 +1,13 @@
 import prisma from "@/lib/prisma";
+import cache from "@/utils/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   try {
+    const cachedPosts  = cache.get("posts");
+    if (cachedPosts) {
+      return NextResponse.json({ posts: cachedPosts, success: true }, { status: 200 });
+    } 
     const posts = await prisma.post.findMany({
       select: {
         content: true,
@@ -15,14 +20,9 @@ export async function GET(req: NextRequest) {
       },
     });
 
+
+    cache.set("posts", posts);
     const response =  NextResponse.json({ posts, success: true }, { status: 200 });
-    
-    // Set Cache-Control headers
-    response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    response.headers.set('Pragma', 'no-cache');
-    response.headers.set('Expires', '0');
-    response.headers.set('Surrogate-Control', 'no-store');
-    response.headers.set('X-Vercel-Cache', 'MISS');
 
       return response;
   } catch (error: any) {
