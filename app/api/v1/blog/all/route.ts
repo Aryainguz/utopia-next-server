@@ -4,10 +4,12 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   try {
-    const cachedPosts  = cache.get("posts");
-    if (cachedPosts) {
-      return NextResponse.json({ posts: cachedPosts, success: true }, { status: 200 });
-    } 
+    const headers = new Headers({
+      "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+      Pragma: "no-cache",
+      Expires: "0",
+      "Surrogate-Control": "no-store",
+    });
     const posts = await prisma.post.findMany({
       select: {
         content: true,
@@ -20,11 +22,12 @@ export async function GET(req: NextRequest) {
       },
     });
 
+    const response = NextResponse.json(
+      { posts, success: true },
+      { status: 200, headers }
+    );
 
-    cache.set("posts", posts);
-    const response =  NextResponse.json({ posts, success: true }, { status: 200 });
-
-      return response;
+    return response;
   } catch (error: any) {
     return NextResponse.json(
       { message: error.message, success: false },

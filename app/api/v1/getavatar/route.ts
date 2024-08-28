@@ -35,9 +35,11 @@ export async function GET(req: NextRequest) {
       { url: randomAvatarUrl },
       {
         headers: {
-          "Cache-Control": "public, s-maxage=0",
-          "CDN-Cache-Control": "public, s-maxage=0",
-          "Vercel-CDN-Cache-Control": "public, s-maxage=0",
+          "Cache-Control":
+            "no-store, no-cache, must-revalidate, proxy-revalidate",
+          Pragma: "no-cache",
+          Expires: "0",
+          "Surrogate-Control": "no-store",
         },
       }
     );
