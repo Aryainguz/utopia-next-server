@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import cloudinary from "../../../../utils/cloudinary";
 
+
+export const dynamic = "force-dynamic";
+
 // Fisher-Yates Shuffle Algorithm
 function shuffleArray(array: any[]) {
   for (let i = array.length - 1; i > 0; i--) {

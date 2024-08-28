@@ -2,6 +2,10 @@ import prisma from "@/lib/prisma";
 import cache from "@/utils/cache";
 import { NextRequest, NextResponse } from "next/server";
 
+
+
+export const dynamic = "force-dynamic";
+
 export async function GET(req: NextRequest) {
   try {
     const headers = new Headers({

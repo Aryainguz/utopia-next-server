@@ -21,12 +21,5 @@ export function middleware(req: NextRequest) {
 
   const res = NextResponse.next();
 
-  // Set Cache-Control header to prevent caching
-  res.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0, s-maxage=0');
-
-  // Optionally, add other headers for legacy cache control
-  res.headers.set('Pragma', 'no-cache');
-  res.headers.set('Expires', '0');
-
   return res;
 }
