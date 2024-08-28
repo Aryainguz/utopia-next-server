@@ -44,7 +44,6 @@ export async function GET(req: NextRequest) {
       }
     );
   } catch (error) {
-    console.error("Error fetching avatars:", error);
     NextResponse.json({ message: "Something went wrong" });
   }
 }
